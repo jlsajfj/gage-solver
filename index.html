@@ -15,7 +15,7 @@
         <div class="wrapper">
             <div class="main-title">Gage Block Calculator</div>
             <div class="description">
-                This site takes a desired height, and calculates the blocks required to create the stack.
+                This site takes a desired height, and calculates the blocks required to create the stack. Range is 0.100" to 8.000"
             </div>
             <div class="inputs">
                 <input type="number" id="gage-height" name="gage-height" class="text-input" placeholder="Height" oninput="limitDecimals()">
@@ -45,6 +45,8 @@
                 document.getElementById('url-fill').innerHTML = window.location.href;
             }
         </script>
+        <!--https://github.com/MikeMcl/decimal.js/-->
+        <script src="./decimal.min.js"></script>
         <script src="./main.js"></script>
     </body>
 </html>

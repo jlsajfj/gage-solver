@@ -16,12 +16,13 @@ function limitDecimals(){
 }
 
 function calculateGages(){
-    var gageIn = parseFloat(document.getElementById('gage-height').value)
+    Decimal.config({ precision: 5})
+    var gageIn = new Decimal(document.getElementById('gage-height').value)
     if(!gageIn || gageIn < 0.1 || gageIn > 8){
         alert('Height input must be a value from 0.100" to 8.000".')
         return;
     }
-    gageIn *= tenk;
+    gageIn = gageIn.mul(tenk)
 
     var block;
     const blocks = [];
@@ -32,17 +33,28 @@ function calculateGages(){
         gageIn -= block * tenk;
     }
 
-    const thou = (gageIn / 10) % 10;
+    var thou = (gageIn / 10) % 10;
     var hund = Math.floor(gageIn / 100) % 5;
-    block = "0.1" + hund + thou;
-    blocks.push(block)
-    gageIn -= 0.1 * tenk + hund * 100 + thou * 10;
+    for(var i = 0; i < 3 && (hund || thou); i++){ // needs to run more than once, but not infinitely
+        if(thou || hund){
+            block = "0.1" + hund + thou;
+            blocks.push(block)
+            gageIn -= 0.1 * tenk + hund * 100 + thou * 10;
+        }
+        thou = (gageIn / 10) % 10;
+        hund = Math.floor(gageIn / 100) % 5;
+    }
 
-    hund = Math.floor(gageIn / 100) % 10;
-    const tens = Math.floor(gageIn / 1000) % 10;
-    block = "0." + tens + hund + "0";
-    blocks.push(block);
-    gageIn -= tens * 1000 + hund * 100;
+    var tens = Math.floor(gageIn / 1000) % 10;
+    for(var i = 0; i < 3 && tens; i++){
+        hund = Math.floor(gageIn / 100) % 10;
+        if(tens){
+            block = "0." + tens + hund + "0";
+            blocks.push(block);
+            gageIn -= tens * 1000 + hund * 100;
+        }
+        tens = Math.floor(gageIn / 1000) % 10;
+    }
 
     if(gageIn >= 40000){
         blocks.push("4.000");
@@ -60,6 +72,7 @@ function calculateGages(){
         blocks.push("1.000");
         gageIn -= 10000;
     }
+    console.log(blocks, gageIn)
     if(blocks.length && !gageIn)
         document.getElementById('gage-blocks').innerHTML = "Required gage blocks:<br /><br />"+blocks.join(' - ');
     else
