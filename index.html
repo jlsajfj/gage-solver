@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            Gage Block Calculator
+        </title>
+        <meta charset="UTF-8">
+        <meta name="description" content="Gage Block Calculator">
+        <meta name="keywords" content="Gage,Gauge">
+        <meta name="author" content="Joseph Ma">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="./main.css" />
+    </head>
+    <body>
+        <div class="wrapper">
+            <div class="main-title">Gage Block Calculator</div>
+            <div class="description">
+                This site takes a desired height, and calculates the blocks required to create the stack.
+            </div>
+            <div class="inputs">
+                <input type="number" id="gage-height" name="gage-height" class="text-input" placeholder="Height" oninput="limitDecimals()">
+            </div>
+            <div class="hint">(Height input is in inches)</div>
+            <div class="option-row">
+                <button type="button" onclick="calculateGages()" class="range-submit">Calculate</button>
+            </div>
+            <div id="gage-blocks"></div>
+            <div class="footer">
+                <br />For IEEE citation:
+                <br />
+                J. Ma, <i>Gage Block Calculator</i>, June 7, 2021. Accessed on: <span id="date-fill"></span>. [Online]. Available: <span id="url-fill"></span>
+                <br />
+                <div class="copyright">&copy; Joseph Ma 2021 <a href="https://github.com/jlsajfj/gage-solver">source</a></span>
+            </div>  
+        </div>
+        <script>
+            const MonthNames = ["Jan", "Feb", "Mar", "Apr", "May", "June",
+                "July", "Aug", "Sep", "Oc", "Nov", "Dec"];
+            window.onload = () => {
+                var date =  new Date();
+                var year = date.getFullYear();
+                var month = MonthNames[date.getMonth()];
+                var day = date.getDate();
+                document.getElementById('date-fill').innerHTML = `${month} ${day}, ${year}`
+                document.getElementById('url-fill').innerHTML = window.location.href;
+            }
+        </script>
+        <script src="./main.js"></script>
+    </body>
+</html>
