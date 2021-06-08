@@ -7,6 +7,7 @@ const THOU = [0.101, 0.102, 0.103, 0.104, 0.105, 0.106, 0.107, 0.108, 0.109, 0.1
 const HUND = [0.050, 0.100, 0.150, 0.200, 0.250, 0.300, 0.350, 0.400, 0.450, 0.500,
     0.550, 0.600, 0.650, 0.700, 0.750, 0.800, 0.850, 0.900, 0.950]
 const WHOL = [1.000, 2.000, 3.000, 4.000]
+// these are actually unused except for TENT
 
 const tenk = 10000;
 
@@ -27,7 +28,7 @@ function calculateGages(){
     var block;
     const blocks = [];
     const tent = gageIn % 10;
-    if(tent) {
+    if(tent && tent > 0) {
         block = TENT[tent - 1]
         blocks.push(block.toString());
         gageIn -= block * tenk;
@@ -36,7 +37,7 @@ function calculateGages(){
     var thou = (gageIn / 10) % 10;
     var hund = Math.floor(gageIn / 100) % 5;
     for(var i = 0; i < 3 && (hund || thou); i++){ // needs to run more than once, but not infinitely
-        if(thou || hund){
+        if((thou && thou > 0) || (hund && hund > 0)){
             block = "0.1" + hund + thou;
             blocks.push(block)
             gageIn -= 0.1 * tenk + hund * 100 + thou * 10;
@@ -48,7 +49,7 @@ function calculateGages(){
     var tens = Math.floor(gageIn / 1000) % 10;
     for(var i = 0; i < 3 && tens; i++){
         hund = Math.floor(gageIn / 100) % 10;
-        if(tens){
+        if(tens && tens > 0){
             block = "0." + tens + hund + "0";
             blocks.push(block);
             gageIn -= tens * 1000 + hund * 100;
